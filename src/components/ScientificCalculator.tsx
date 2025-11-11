@@ -2,6 +2,31 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+const createGoldPowder = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const button = e.currentTarget;
+  const rect = button.getBoundingClientRect();
+  const particleCount = 15;
+
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElement("div");
+    particle.className = "gold-particle";
+    
+    const startX = rect.left + rect.width / 2 + (Math.random() - 0.5) * 40;
+    const startY = rect.top + rect.height / 2 + (Math.random() - 0.5) * 40;
+    
+    particle.style.left = `${startX}px`;
+    particle.style.top = `${startY}px`;
+    particle.style.animationDelay = `${Math.random() * 0.2}s`;
+    particle.style.animationDuration = `${1 + Math.random() * 0.5}s`;
+    
+    document.body.appendChild(particle);
+    
+    setTimeout(() => {
+      particle.remove();
+    }, 2000);
+  }
+};
+
 export const ScientificCalculator = () => {
   const [display, setDisplay] = useState("0");
   const [previousValue, setPreviousValue] = useState<string | null>(null);
@@ -10,7 +35,8 @@ export const ScientificCalculator = () => {
   const [memory, setMemory] = useState(0);
   const [angleMode, setAngleMode] = useState<"deg" | "rad">("deg");
 
-  const handleNumber = (num: string) => {
+  const handleNumber = (num: string, e?: React.MouseEvent<HTMLButtonElement>) => {
+    if (e) createGoldPowder(e);
     if (newNumber) {
       setDisplay(num);
       setNewNumber(false);
@@ -19,7 +45,8 @@ export const ScientificCalculator = () => {
     }
   };
 
-  const handleOperation = (op: string) => {
+  const handleOperation = (op: string, e?: React.MouseEvent<HTMLButtonElement>) => {
+    if (e) createGoldPowder(e);
     const current = parseFloat(display);
     
     if (previousValue === null) {
@@ -53,7 +80,8 @@ export const ScientificCalculator = () => {
     }
   };
 
-  const handleScientific = (func: string) => {
+  const handleScientific = (func: string, e?: React.MouseEvent<HTMLButtonElement>) => {
+    if (e) createGoldPowder(e);
     const current = parseFloat(display);
     let result: number;
 
@@ -121,7 +149,8 @@ export const ScientificCalculator = () => {
     return result;
   };
 
-  const handleEquals = () => {
+  const handleEquals = (e?: React.MouseEvent<HTMLButtonElement>) => {
+    if (e) createGoldPowder(e);
     if (operation && previousValue !== null) {
       const result = calculate(parseFloat(previousValue), parseFloat(display), operation);
       setDisplay(String(result));
@@ -131,14 +160,16 @@ export const ScientificCalculator = () => {
     }
   };
 
-  const handleClear = () => {
+  const handleClear = (e?: React.MouseEvent<HTMLButtonElement>) => {
+    if (e) createGoldPowder(e);
     setDisplay("0");
     setPreviousValue(null);
     setOperation(null);
     setNewNumber(true);
   };
 
-  const handleDecimal = () => {
+  const handleDecimal = (e?: React.MouseEvent<HTMLButtonElement>) => {
+    if (e) createGoldPowder(e);
     if (newNumber) {
       setDisplay("0.");
       setNewNumber(false);
@@ -147,7 +178,8 @@ export const ScientificCalculator = () => {
     }
   };
 
-  const handleBackspace = () => {
+  const handleBackspace = (e?: React.MouseEvent<HTMLButtonElement>) => {
+    if (e) createGoldPowder(e);
     if (display.length > 1) {
       setDisplay(display.slice(0, -1));
     } else {
@@ -186,63 +218,63 @@ export const ScientificCalculator = () => {
 
       <div className="grid grid-cols-6 gap-2">
         {/* Scientific Functions Row 1 */}
-        <Button onClick={() => handleScientific("sin")} className={specialButtonClass}>sin</Button>
-        <Button onClick={() => handleScientific("cos")} className={specialButtonClass}>cos</Button>
-        <Button onClick={() => handleScientific("tan")} className={specialButtonClass}>tan</Button>
-        <Button onClick={() => handleScientific("log")} className={specialButtonClass}>log</Button>
-        <Button onClick={() => handleScientific("ln")} className={specialButtonClass}>ln</Button>
-        <Button onClick={handleClear} className="h-14 text-lg font-bold backdrop-blur-xl bg-gradient-to-br from-destructive/40 to-accent/40 border-2 border-destructive/50 hover:border-destructive text-destructive-foreground rounded-2xl transition-all hover:scale-105 hover:shadow-[0_0_25px_rgba(255,0,100,0.5)] active:scale-95">AC</Button>
+        <Button onClick={(e) => handleScientific("sin", e)} className={specialButtonClass}>sin</Button>
+        <Button onClick={(e) => handleScientific("cos", e)} className={specialButtonClass}>cos</Button>
+        <Button onClick={(e) => handleScientific("tan", e)} className={specialButtonClass}>tan</Button>
+        <Button onClick={(e) => handleScientific("log", e)} className={specialButtonClass}>log</Button>
+        <Button onClick={(e) => handleScientific("ln", e)} className={specialButtonClass}>ln</Button>
+        <Button onClick={(e) => handleClear(e)} className="h-14 text-lg font-bold backdrop-blur-xl bg-gradient-to-br from-destructive/40 to-accent/40 border-2 border-destructive/50 hover:border-destructive text-destructive-foreground rounded-2xl transition-all hover:scale-105 hover:shadow-[0_0_25px_rgba(255,0,100,0.5)] active:scale-95">AC</Button>
 
         {/* Scientific Functions Row 2 */}
-        <Button onClick={() => handleScientific("√")} className={specialButtonClass}>√</Button>
-        <Button onClick={() => handleScientific("x²")} className={specialButtonClass}>x²</Button>
-        <Button onClick={() => handleScientific("x³")} className={specialButtonClass}>x³</Button>
-        <Button onClick={() => handleOperation("^")} className={specialButtonClass}>x^y</Button>
-        <Button onClick={() => handleScientific("1/x")} className={specialButtonClass}>1/x</Button>
-        <Button onClick={handleBackspace} className={specialButtonClass}>⌫</Button>
+        <Button onClick={(e) => handleScientific("√", e)} className={specialButtonClass}>√</Button>
+        <Button onClick={(e) => handleScientific("x²", e)} className={specialButtonClass}>x²</Button>
+        <Button onClick={(e) => handleScientific("x³", e)} className={specialButtonClass}>x³</Button>
+        <Button onClick={(e) => handleOperation("^", e)} className={specialButtonClass}>x^y</Button>
+        <Button onClick={(e) => handleScientific("1/x", e)} className={specialButtonClass}>1/x</Button>
+        <Button onClick={(e) => handleBackspace(e)} className={specialButtonClass}>⌫</Button>
 
         {/* Scientific Functions Row 3 */}
-        <Button onClick={() => handleScientific("π")} className={specialButtonClass}>π</Button>
-        <Button onClick={() => handleScientific("e")} className={specialButtonClass}>e</Button>
-        <Button onClick={() => handleScientific("!")} className={specialButtonClass}>n!</Button>
-        <Button onClick={() => handleScientific("±")} className={specialButtonClass}>±</Button>
-        <Button onClick={() => handleOperation("%")} className={specialButtonClass}>%</Button>
-        <Button onClick={() => handleOperation("÷")} className={operatorButtonClass}>÷</Button>
+        <Button onClick={(e) => handleScientific("π", e)} className={specialButtonClass}>π</Button>
+        <Button onClick={(e) => handleScientific("e", e)} className={specialButtonClass}>e</Button>
+        <Button onClick={(e) => handleScientific("!", e)} className={specialButtonClass}>n!</Button>
+        <Button onClick={(e) => handleScientific("±", e)} className={specialButtonClass}>±</Button>
+        <Button onClick={(e) => handleOperation("%", e)} className={specialButtonClass}>%</Button>
+        <Button onClick={(e) => handleOperation("÷", e)} className={operatorButtonClass}>÷</Button>
 
         {/* Number Pad Row 1 */}
         {["7", "8", "9"].map((num) => (
-          <Button key={num} onClick={() => handleNumber(num)} className={cn(waterButtonClass, "text-xl")}>
+          <Button key={num} onClick={(e) => handleNumber(num, e)} className={cn(waterButtonClass, "text-xl")}>
             {num}
           </Button>
         ))}
-        <Button onClick={() => handleScientific("e^x")} className={specialButtonClass}>e^x</Button>
-        <Button onClick={() => handleScientific("10^x")} className={specialButtonClass}>10^x</Button>
-        <Button onClick={() => handleOperation("×")} className={operatorButtonClass}>×</Button>
+        <Button onClick={(e) => handleScientific("e^x", e)} className={specialButtonClass}>e^x</Button>
+        <Button onClick={(e) => handleScientific("10^x", e)} className={specialButtonClass}>10^x</Button>
+        <Button onClick={(e) => handleOperation("×", e)} className={operatorButtonClass}>×</Button>
 
         {/* Number Pad Row 2 */}
         {["4", "5", "6"].map((num) => (
-          <Button key={num} onClick={() => handleNumber(num)} className={cn(waterButtonClass, "text-xl")}>
+          <Button key={num} onClick={(e) => handleNumber(num, e)} className={cn(waterButtonClass, "text-xl")}>
             {num}
           </Button>
         ))}
-        <Button onClick={() => setMemory(memory + parseFloat(display))} className={specialButtonClass}>M+</Button>
-        <Button onClick={() => setMemory(memory - parseFloat(display))} className={specialButtonClass}>M-</Button>
-        <Button onClick={() => handleOperation("-")} className={operatorButtonClass}>−</Button>
+        <Button onClick={(e) => { createGoldPowder(e); setMemory(memory + parseFloat(display)); }} className={specialButtonClass}>M+</Button>
+        <Button onClick={(e) => { createGoldPowder(e); setMemory(memory - parseFloat(display)); }} className={specialButtonClass}>M-</Button>
+        <Button onClick={(e) => handleOperation("-", e)} className={operatorButtonClass}>−</Button>
 
         {/* Number Pad Row 3 */}
         {["1", "2", "3"].map((num) => (
-          <Button key={num} onClick={() => handleNumber(num)} className={cn(waterButtonClass, "text-xl")}>
+          <Button key={num} onClick={(e) => handleNumber(num, e)} className={cn(waterButtonClass, "text-xl")}>
             {num}
           </Button>
         ))}
-        <Button onClick={() => { setDisplay(String(memory)); setNewNumber(true); }} className={specialButtonClass}>MR</Button>
-        <Button onClick={() => setMemory(0)} className={specialButtonClass}>MC</Button>
-        <Button onClick={() => handleOperation("+")} className={operatorButtonClass}>+</Button>
+        <Button onClick={(e) => { createGoldPowder(e); setDisplay(String(memory)); setNewNumber(true); }} className={specialButtonClass}>MR</Button>
+        <Button onClick={(e) => { createGoldPowder(e); setMemory(0); }} className={specialButtonClass}>MC</Button>
+        <Button onClick={(e) => handleOperation("+", e)} className={operatorButtonClass}>+</Button>
 
         {/* Bottom Row */}
-        <Button onClick={() => handleNumber("0")} className={cn(waterButtonClass, "col-span-2 text-xl")}>0</Button>
-        <Button onClick={handleDecimal} className={cn(waterButtonClass, "text-xl")}>.</Button>
-        <Button onClick={handleEquals} className="col-span-3 h-14 text-xl font-bold backdrop-blur-xl bg-gradient-to-br from-secondary/50 to-water/50 border-2 border-secondary/60 hover:border-secondary text-secondary-foreground rounded-2xl transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(150,0,255,0.6)] active:scale-95">=</Button>
+        <Button onClick={(e) => handleNumber("0", e)} className={cn(waterButtonClass, "col-span-2 text-xl")}>0</Button>
+        <Button onClick={(e) => handleDecimal(e)} className={cn(waterButtonClass, "text-xl")}>.</Button>
+        <Button onClick={(e) => handleEquals(e)} className="col-span-3 h-14 text-xl font-bold backdrop-blur-xl bg-gradient-to-br from-secondary/50 to-water/50 border-2 border-secondary/60 hover:border-secondary text-secondary-foreground rounded-2xl transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(150,0,255,0.6)] active:scale-95">=</Button>
       </div>
     </div>
   );
