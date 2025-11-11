@@ -52,10 +52,11 @@ export default {
           border: "hsl(var(--glass-border))",
           highlight: "hsl(var(--glass-highlight))",
         },
-        water: {
-          DEFAULT: "hsl(var(--water-blue))",
-          light: "hsl(var(--water-light))",
-          deep: "hsl(var(--water-deep))",
+        energy: {
+          purple: "hsl(var(--energy-purple))",
+          orange: "hsl(var(--energy-orange))",
+          pink: "hsl(var(--energy-pink))",
+          yellow: "hsl(var(--energy-yellow))",
         },
       },
       borderRadius: {
