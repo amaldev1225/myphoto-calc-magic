@@ -50,6 +50,12 @@ export default {
         glass: {
           bg: "hsl(var(--glass-bg))",
           border: "hsl(var(--glass-border))",
+          highlight: "hsl(var(--glass-highlight))",
+        },
+        water: {
+          DEFAULT: "hsl(var(--water-blue))",
+          light: "hsl(var(--water-light))",
+          deep: "hsl(var(--water-deep))",
         },
       },
       borderRadius: {
@@ -74,10 +80,20 @@ export default {
             height: "0",
           },
         },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
+        ripple: {
+          "0%": { transform: "scale(0)", opacity: "1" },
+          "100%": { transform: "scale(4)", opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "shimmer": "shimmer 2s linear infinite",
+        "ripple": "ripple 0.6s linear",
       },
     },
   },
